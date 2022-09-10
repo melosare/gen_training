@@ -1,11 +1,9 @@
 /*
 ===============================================================================
-                  03-60-256 SYSTEM PROGRAMMING (Winter 2015)
-                                 ASSIGNMENT 2
-				WOGHIREM LAB 52
+
 ===============================================================================
 
-LAB 52
+
 JAN 30 2015
 Purpose: mimic the ls utility when given -l  flag
 Author: deconstructed myls.c file with added code for full
