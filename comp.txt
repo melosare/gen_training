@@ -1,0 +1,58 @@
+===============================================================================
+                  03-60-256 SYSTEM PROGRAMMING (Winter 2015)
+                                 ASSIGNMENT 7
+WOGHIREN, MELISSA
+===============================================================================
+
+1. The cleanup function essentially cleans up after the server program as it 
+is exited (when it receives a SIGINT or SIGTERM signal). It will first 
+shutdown the socket connection, stopping both transmission and reception. 
+Then, it will clear the message queue and finally exit.
+
+2. Upon receipt of a SIGUSR1 signal the message function is called causing 
+the server to read in a message from the message queue sent by the client 
+and print it.
+
+3. This will allow the server to first check and receive a message (as 
+instructed by the message handler when it gets a SIGUSR1 signal) without 
+being interrupted by a SIGINT or SIGTERM signal.   
+
+4. The semaphore used in this server will allow up to 10 connections (set 
+when it is first initiated). However, the socket created has a queue size of 
+3 pending connections (set in the listen function). While a single process 
+or thread can have only one connection through the socket, creating 
+children processes or multiple threads will allow multiple connections 
+through the socket simultaneously.
+
+5. This will allow the server socket to be bound to any of the available
+ interfaces and the connection to work without actually needing to know 
+a specific IP address of the machine it is being run on. 
+
+6. After available semaphore connections are reported and if a socket
+ connection is accepted a child process is created taking one of the 
+available semaphore connections. After a message is received from the 
+client (and handled) the socket connection is closed, semaphore resource
+ allocation made available again and the child is terminated.
+
+7. This allows the child process to still be affected normally by these 
+signals as the specific changes we want (cleanup, proper message handling) 
+are only relevant to the main server program rather than it's connections
+ (handled in the child processes).
+
+8. The child process is receiving a message through the socket from the 
+queue (up to 80 characters) and then it sends a message back to the queue.
+
+9. The signal SIGUSR1 is sent to the parent process or the main server 
+program. The signal allows the parent process or server to properly handle 
+the message sent as described by the message handler implementation.
+
+10. The server will grab the message sent by the child process from the 
+queue if one is available for it. If there isn't one there it will break out
+ of the for loop as communication is perceived as being over (IPC_NOWAIT 
+will cause this function to return -1 if no message is available to be 
+received). 
+
+11. Constantly sending a message, i.e. making one available to be received
+ by the server will stop the msgrcv call from failing (due to the condition
+ of the IPC_ NOWAIT flag) and therefore allow the for loop to iterate again
+ to receive an additional message.
