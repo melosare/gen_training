@@ -1,7 +1,4 @@
 ===============================================================================
-                  03-60-256 SYSTEM PROGRAMMING (Winter 2015)
-                                 ASSIGNMENT 7
-WOGHIREN, MELISSA
 ===============================================================================
 
 1. The cleanup function essentially cleans up after the server program as it 
