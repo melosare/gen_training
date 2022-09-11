@@ -1,0 +1,208 @@
+package com.madebyjeffrey;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.io.File;
+import java.io.PrintStream;
+import java.io.IOException;
+
+terminal         LETMEINSPIREYOU, HINGES, MAJORKEY;
+terminal         LEGGO, WEONTHAT, WEOUT, BASICB, SCRUB;
+terminal		 HUNDRED, WORDUP, WEDABEST, THEKEYIS, PRINT, PRINTLN;
+terminal         MO, SONIN, COLON, SEMIC, GIMMEDAT;
+terminal         WESTSIDE, EASTSIDE, BLESS, UP, PEEPS;
+terminal 		 THEYDONTWANTYOUTOSUCCEED;
+terminal         PLUS, MINUS, SPLIT, STACKS, STEPIN;
+terminal  String ID, BARS, MAIN;
+terminal String JETSKIS;
+
+non terminal  Integer     program;
+non terminal  List<String>    uses_decl;
+non terminal  String          method_decl;
+non terminal  List<String>   method_decls;
+non terminal  List<String>   formal_params, formal_params_opt;
+non terminal  String     formal_param;
+non terminal  String          type;
+non terminal  String     expression, bool_expression;
+non terminal  String     function_call;
+non terminal  String    function_params;
+non terminal  String    string_params;
+non terminal  String writeStmt;
+non terminal  String program_decl;
+non terminal  String block, statement;
+non terminal  String local_var_decl, assign_statement, return_statement;
+non terminal  List<String> identifier_list;
+non terminal  String number;
+non terminal  String statement_list;
+non terminal  String conditional_statement; //, conditional_statements;
+
+
+
+precedence left PLUS, MINUS, BLESS, UP;
+precedence left STACKS, SPLIT;
+//precedence left UP;
+precedence left SONIN, STEPIN;
+precedence left THEYDONTWANTYOUTOSUCCEED;
+
+start with program;
+
+program ::= program_decl:pn uses_decl:imports method_decls:methods block:main
+                {: try { PrintStream out = new PrintStream("output.java");
+
+					for (Iterator<String> i = imports.iterator(); i.hasNext();) {
+                       out.printf("//pimport static tiny.lib.%s.*;\n", i.next());
+                   }
+                   	   out.printf("public class %s {\n", pn);
+
+                       out.printf("%s\n", String.join("\n", methods));
+
+                   	   out.printf("\n}\n");
+						RESULT = 1;
+
+					}catch(IOException io){
+						io.printStackTrace();
+						RESULT = 0;
+					}
+                :}
+                ;
+
+program_decl ::= LETMEINSPIREYOU ID:ide SEMIC {: RESULT = ide;  :} ;
+
+uses_decl ::= HINGES identifier_list:is SEMIC {: RESULT = is; :}
+            | {: RESULT = new ArrayList<>(); :}
+            ;
+
+identifier_list ::= identifier_list:ids MO ID:ide {: ids.add(ide); RESULT = ids; :}
+                  | ID:ide {: RESULT = new ArrayList<>(); RESULT.add(ide); :}
+                  ;
+
+method_decls ::= method_decls:ide method_decl:m  {: ide.add(m); RESULT = ide; :}
+               |        {: RESULT = new ArrayList<>(); :}
+               ;
+
+method_decl ::= MAJORKEY ID:ide WESTSIDE formal_params_opt:params EASTSIDE COLON type:t block:b
+
+                {: RESULT = String.format("public static %s %s(%s) %s\n",
+                               t, ide, String.join(", ", params), b); :}
+				|
+				MAJORKEY MAIN WESTSIDE formal_params_opt:params EASTSIDE COLON type:t block:b
+
+                {: RESULT = String.format("public static %s main(String [] args %s) %s\n",
+                               t, String.join(", ", params), b); :}
+              ;
+
+formal_params_opt ::= WEONTHAT formal_params:fps {: RESULT = fps; :}
+                    | {: RESULT = new ArrayList<>(); :}
+                    ;
+
+formal_params ::= formal_params:fps MO formal_param:fp {: fps.add(fp); RESULT = fps; :}
+                | formal_param:fp {: RESULT = new ArrayList<>(); RESULT.add(fp); :}
+                ;
+
+type ::= BASICB {: RESULT = "int"; :}
+       | HUNDRED {: RESULT = "double"; :}
+       | WORDUP {: RESULT = "String"; :}
+       | SCRUB {: RESULT = "void"; :}
+       ;
+
+block ::= LEGGO statement_list:s WEOUT {:RESULT= ("{\n"+ s+"\n}");:}
+      |LEGGO  WEOUT {:RESULT = "";:}
+        ;
+
+local_var_decl    ::= type ID:i COLON type:t
+ 					{:RESULT= (t + " " + i+ ";");:}
+				  | type ID:i COLON type:t assign_statement:a
+				  {:RESULT= (t + " " + i + a );:} ;
+
+assign_statement ::= ID:i GIMMEDAT expression:e
+        {:RESULT= (i+"="+e+";");:}
+        |
+        GIMMEDAT expression:e
+        {:RESULT= ("="+e+";");:};
+
+return_statement ::= WEDABEST expression:e
+        {:RESULT= ("return "+e+";");:};
+
+statement_list ::= statement:s
+        		{:RESULT= (s);:}
+        		| statement:s  statement_list:sts
+       			{:RESULT= (s + " " + sts);:} ;
+
+statement ::= block:b
+        {:RESULT= (b+"\n");:}
+    	| local_var_decl:e SEMIC
+        {:RESULT= (e+"\n");:}
+    	| assign_statement:e SEMIC
+        {:RESULT= (e+"\n");:}
+    	|return_statement:e SEMIC
+        {:RESULT= (e+"\n");:}
+    	|conditional_statement:e
+        {:RESULT= (e+"\n");:}
+        |writeStmt:e SEMIC
+        {:RESULT= (e+"\n");:}
+
+        | function_call:f SEMIC
+        {: RESULT = String.format("%s", f); :};
+
+function_call     ::= THEKEYIS ID:i WESTSIDE function_params:f EASTSIDE
+					{: RESULT = String.format("%s(%s);", i,f); :}
+					| THEKEYIS ID:i WESTSIDE EASTSIDE
+					{: RESULT = String.format("%s();", i); :};
+
+function_params ::= expression:e
+				{: RESULT = (e); :}
+				| function_params:f MO expression:e
+				{: RESULT = String.format("%s, %s", f,e); :};
+
+expression        ::= ID:i
+					{:RESULT= (i);:}
+                  | number:n
+                    {:RESULT= n;:}
+                  | WESTSIDE expression:e EASTSIDE
+                  {:RESULT= ("("+e+")");:}
+                  | function_call:f {:RESULT = f;:}
+                  | BARS:s
+                  {:RESULT = s;:}
+                  | expression:e PLUS expression:ex
+                  {:RESULT= (e+"+"+ex);:}
+                  | expression:e MINUS expression:ex
+                  {:RESULT= (e+"-"+ex);:}
+                  | expression:e STACKS expression:ex
+                  {:RESULT= (e+"*"+ex);:}
+                  | expression:e SPLIT expression:ex
+                  {:RESULT= (e+"/"+ex);:}
+                 ;
+conditional_statement   ::= BLESS COLON bool_expression:b UP COLON statement:s
+        				{:RESULT= ("if ("+b+"){"+s+"}");:}
+        				| conditional_statement:b THEYDONTWANTYOUTOSUCCEED COLON statement:s2
+        				{:RESULT= (b + "else{"+ s2+"}");:} //removed bracket before else
+						;
+
+
+bool_expression   ::= expression:e STEPIN expression:e2
+				  {:RESULT= (e + ">" + e2);:}
+                  | expression:e SONIN expression:e2
+                  {:RESULT= (e + "<" + e2);:}
+                  | expression:e PEEPS expression:e2
+				  {:RESULT= (e + "==" + e2);:};
+
+formal_param ::= ID:i COLON type:t
+        {: RESULT = String.format("%s %s", t, i); :}
+        ;
+
+writeStmt ::= THEKEYIS PRINT WESTSIDE string_params:s EASTSIDE
+        {:RESULT= ("System.out.print(\"\" +"+s+");");:}
+		|THEKEYIS PRINTLN WESTSIDE string_params:s EASTSIDE
+        {:RESULT= ("System.out.println(\"\" +"+s+");");:}
+        | THEKEYIS PRINT WESTSIDE  EASTSIDE
+        {:RESULT= ("System.out.print(\"You smart, you very smart!  \" );");:}
+        | THEKEYIS PRINTLN WESTSIDE  EASTSIDE
+        {:RESULT= ("System.out.println(\"You loyal!\" );");:}
+		;
+
+string_params ::= string_params MO expression
+			| expression
+			;
+			
+number ::= JETSKIS:d {:RESULT = d;:};
