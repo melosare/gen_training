@@ -1,0 +1,62 @@
+Khaled+ High-level Language Specification (EBNF) v2.0
+
+
+ 
+program   = ‘LETMEINSPIREYOU’ [uses] {function-def}
+main-def;
+uses    = ‘HINGES’ id {, id} ;
+ 
+function-def  = ‘MAJORKEY’ id WESTSIDE {‘WEONTHAT’ [params]}
+      EASTSIDE type ‘LEGGO’ block ‘WEOUT’;
+main-def   = ‘MAJORKEY’ ‘MAIN’ WESTSIDE {‘WEONTHAT’ [params]}
+EASTSIDE ‘LEGGO’ block ‘WEOUT’; 
+ 
+type   = ‘BASICB’ | ‘1HUNDRED’ | ‘WORDUP’ | ‘SCRUB’;
+ 
+params   = type id {‘MO’ type id};
+passed-params  = id | COCOABUTTER{COCOABUTTER} | JETSKIS{JETSKIS};
+ 
+id   = COCOABUTTER{COCOABUTTER | JETSKIS | ‘_’ };
+ 
+block   = {statement} statement;
+ 
+statement  = return-state
+                        | assign-state
+		  | if-state
+		  | var-declare
+		  | function-call;
+ 
+If-state  = ‘BLESS’ ‘:’ expr ‘UP’‘:’ block  
+		| ‘BLESS’ ‘:’ expr ‘UP’ ‘:’ block 				  	‘THEYDONTWANTYOUTOSUCEED’ block;
+ 
+return-state  = ‘WEDABEST’ jetskis{jetskis} ‘;’;
+assign-state  = id 'GIMMEDAT' expr ’;’;
+var-declare  = type id ‘;’
+      | type assign-state ‘;’;
+ 
+function-call  = ‘THEKEYIS’ id ‘(’ passed-params {MO
+passed-params} ‘)’ ‘;’;
+ 
+expr   =  id
+           |  JETSKIS{JETSKIS}
+	|  EXPR op EXPR;
+ 
+bool-expr  = expr PEEPS expr
+	        | expr STEPIN expr
+	        | expr SUNNIN expr ;
+ 
+OP   = STACKS | SPLIT | MINUS | PLUS;
+
+MO   = ‘,’;
+PEEPS  = ‘=’;
+STEPIN  = ‘>’;
+SUNNIN  = ‘<’;
+STACKS  = ‘*’;
+SPLIT  = ‘/’;
+MINUS  = ‘-’;
+PLUS  = ‘+’;
+SEMIC = ‘;’;
+COLON = ‘:’;
+GIMMEDAT = ‘:=’;
+JETSKIS   = ?0-9?;
+COCOABUTTER  = ?a-f, A-F?;
