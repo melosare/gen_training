@@ -1,62 +1,62 @@
 Khaled+ High-level Language Specification (EBNF) v2.0
 
-
- 
-program   = ‘LETMEINSPIREYOU’ [uses] {function-def}
+----------------------------------------------------------
+Â 
+programÂ   = â€˜LETMEINSPIREYOUâ€™ [uses] {function-def}
 main-def;
-uses    = ‘HINGES’ id {, id} ;
- 
-function-def  = ‘MAJORKEY’ id WESTSIDE {‘WEONTHAT’ [params]}
-      EASTSIDE type ‘LEGGO’ block ‘WEOUT’;
-main-def   = ‘MAJORKEY’ ‘MAIN’ WESTSIDE {‘WEONTHAT’ [params]}
-EASTSIDE ‘LEGGO’ block ‘WEOUT’; 
- 
-type   = ‘BASICB’ | ‘1HUNDRED’ | ‘WORDUP’ | ‘SCRUB’;
- 
-params   = type id {‘MO’ type id};
-passed-params  = id | COCOABUTTER{COCOABUTTER} | JETSKIS{JETSKIS};
- 
-id   = COCOABUTTER{COCOABUTTER | JETSKIS | ‘_’ };
- 
-block   = {statement} statement;
- 
-statement  = return-state
+usesÂ  Â  = â€˜HINGESâ€™ id {, id} ;
+Â 
+function-defÂ  = â€˜MAJORKEYâ€™ id WESTSIDE {â€˜WEONTHATâ€™ [params]}
+Â Â Â Â Â Â EASTSIDE type â€˜LEGGOâ€™ block â€˜WEOUTâ€™;
+main-defÂ   = â€˜MAJORKEYâ€™ â€˜MAINâ€™ WESTSIDE {â€˜WEONTHATâ€™ [params]}
+EASTSIDE â€˜LEGGOâ€™ block â€˜WEOUTâ€™; 
+Â 
+typeÂ   = â€˜BASICBâ€™ | â€˜1HUNDREDâ€™ | â€˜WORDUPâ€™ | â€˜SCRUBâ€™;
+Â 
+paramsÂ   = type id {â€˜MOâ€™ type id};
+passed-paramsÂ  = id | COCOABUTTER{COCOABUTTER} | JETSKIS{JETSKIS};
+Â 
+idÂ   = COCOABUTTER{COCOABUTTER | JETSKIS | â€˜_â€™ };
+Â 
+blockÂ   = {statement} statement;
+Â 
+statementÂ  = return-state
                         | assign-state
 		  | if-state
 		  | var-declare
 		  | function-call;
- 
-If-state  = ‘BLESS’ ‘:’ expr ‘UP’‘:’ block  
-		| ‘BLESS’ ‘:’ expr ‘UP’ ‘:’ block 				  	‘THEYDONTWANTYOUTOSUCEED’ block;
- 
-return-state  = ‘WEDABEST’ jetskis{jetskis} ‘;’;
-assign-state  = id 'GIMMEDAT' expr ’;’;
-var-declare  = type id ‘;’
-      | type assign-state ‘;’;
- 
-function-call  = ‘THEKEYIS’ id ‘(’ passed-params {MO
-passed-params} ‘)’ ‘;’;
- 
-expr   =  id
-           |  JETSKIS{JETSKIS}
-	|  EXPR op EXPR;
- 
-bool-expr  = expr PEEPS expr
-	        | expr STEPIN expr
-	        | expr SUNNIN expr ;
- 
-OP   = STACKS | SPLIT | MINUS | PLUS;
+Â 
+If-stateÂ  = â€˜BLESSâ€™ â€˜:â€™Â exprÂ â€˜UPâ€™â€˜:â€™ block Â 
+		| â€˜BLESSâ€™ â€˜:â€™Â exprÂ â€˜UPâ€™ â€˜:â€™ block 				  	â€˜THEYDONTWANTYOUTOSUCEEDâ€™ block;
+Â 
+return-stateÂ  = â€˜WEDABESTâ€™Â jetskis{jetskis} â€˜;â€™;
+assign-stateÂ  = id 'GIMMEDAT'Â exprÂ â€™;â€™;
+var-declareÂ  = type id â€˜;â€™
+Â      | type assign-state â€˜;â€™;
+Â 
+function-callÂ  = â€˜THEKEYISâ€™ id â€˜(â€™ passed-paramsÂ {MO
+passed-params} â€˜)â€™ â€˜;â€™;
+Â 
+exprÂ   = Â id
+           | Â JETSKIS{JETSKIS}
+	| Â EXPRÂ opÂ EXPR;
+Â 
+bool-exprÂ  =Â exprÂ PEEPSÂ expr
+	        |Â exprÂ STEPINÂ expr
+	        |Â exprÂ SUNNINÂ exprÂ ;
+Â 
+OPÂ   = STACKS | SPLIT | MINUS | PLUS;
 
-MO   = ‘,’;
-PEEPS  = ‘=’;
-STEPIN  = ‘>’;
-SUNNIN  = ‘<’;
-STACKS  = ‘*’;
-SPLIT  = ‘/’;
-MINUS  = ‘-’;
-PLUS  = ‘+’;
-SEMIC = ‘;’;
-COLON = ‘:’;
-GIMMEDAT = ‘:=’;
-JETSKIS   = ?0-9?;
-COCOABUTTER  = ?a-f, A-F?;
+MOÂ   = â€˜,â€™;
+PEEPSÂ  = â€˜=â€™;
+STEPINÂ  = â€˜>â€™;
+SUNNINÂ  = â€˜<â€™;
+STACKSÂ  = â€˜*â€™;
+SPLITÂ  = â€˜/â€™;
+MINUSÂ  = â€˜-â€™;
+PLUSÂ  = â€˜+â€™;
+SEMIC = â€˜;â€™;
+COLON = â€˜:â€™;
+GIMMEDAT = â€˜:=â€™;
+JETSKISÂ   = ?0-9?;
+COCOABUTTERÂ  = ?a-f, A-F?;
